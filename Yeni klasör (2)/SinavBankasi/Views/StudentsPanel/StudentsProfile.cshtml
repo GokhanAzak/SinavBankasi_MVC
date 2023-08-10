@@ -1,0 +1,35 @@
+﻿@model EntityLayer.Concreate.Students
+@{
+    ViewBag.Title = "StudentsProfile";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<h2>Profil düzenleme </h2>
+@using (Html.BeginForm("StudentsProfile", "StudentsPanel", FormMethod.Post))
+{
+    <div class="form-group">
+
+        @Html.HiddenFor(x => x.StudentID, new { @class = "form-control" })
+
+        <br />
+        @Html.Label("Öğrenci Adı")
+        @Html.TextBoxFor(x => x.StudentName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.StudentName)
+        <br />
+        @Html.Label("Öğrenci Sayadı")
+        @Html.TextBoxFor(x => x.StudentSurName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.StudentSurName)
+        <br />
+        @Html.Label("Öğrenci Mail")
+        @Html.TextBoxFor(x => x.StudentMail, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.StudentMail)
+        <br />
+        @Html.Label("Öğrenci Şifresi")
+        @Html.TextBoxFor(x => x.StudentPassword, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.StudentPassword)
+        <br />
+        <button class="btn btn-success"> Değişikleri Kaydet</button>
+    </div>
+}
+
+

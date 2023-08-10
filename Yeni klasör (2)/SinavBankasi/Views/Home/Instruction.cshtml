@@ -1,0 +1,46 @@
+﻿@model SinavBankasi.Models.SessionModel
+
+
+<div class="container">
+    <br /><br />
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@ViewBag.TestName</h2>
+
+            Konu:  @ViewBag.TestDescription
+            <br />  <br />
+        </div>
+        <div class="col-md-6">
+            Test Süresi: @(ViewBag.Duration) dakika
+            <br />
+
+        </div>
+        <br />  <br />  <br />  <br />  <br />  <br />  <br />  <br />  <br />  <br />
+        <div class="col-md-12">
+            <h3> Başlamadan önce, lütfen aşağıdaki talimatları dikkatlice okuyun.</h3>
+        </div>
+        <br />  <br />  <br />  <br />
+    </div>
+    <p>Sınavda kesimlikle yani ssekme açmayınız!</p>
+    <p>Sınav süresi içerisinde sınavı bitiriniz</p>
+
+
+    @if (Model != null)
+    {
+        using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @Id = "formRegister" }))
+        {
+           @Html.HiddenFor(x => Model.TestId);
+            @Html.HiddenFor(x => Model.UserName);
+            @Html.HiddenFor(x => Model.UserSurName);
+
+            @Html.HiddenFor(x => Model.Mail);
+            @Html.HiddenFor(x => Model.Phone);
+
+            <a href="javascript:void(0);" onclick="document.getElementById('formRegister').submit();" class="btn btn-primary">Kaydol ve Başla</a>
+                
+
+        }
+    }
+
+
+</div>

@@ -1,0 +1,116 @@
+﻿@using EntityLayer.Concreate
+@model List<Exam>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<body class="hold-transition sidebar-mini">
+
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Sınav işlemleri</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th style="width: 1%">
+                                #
+                            </th>
+                            <th style="width: 20%">
+                                Sınav Adı
+                            </th>
+                            <th style="width:15%">
+                                Oluşturan Eğitmen
+                            </th>
+                            <th style="width: 10%">
+                                Etkinlik
+                            </th>
+                            <th style="width: 8%" class="text-center">
+                               Sınav Süresi
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+
+                                <td>
+                                    @item.ExamID
+                                </td>
+
+                                <td>
+                                    <a>
+                                        @item.CategoryName
+                                    </a>
+                                    <br />
+                                    <small>
+                                        @(((DateTime)item.ExamDate).ToString("dd-MMM-yyyy"))
+                                    </small>
+                                </td>
+                                <td>
+                                   
+                                        <a>
+                                            @item.WriterName @item.WriterSurName
+                                        </a>
+                                    
+                                </td>
+                                <td>
+                                   @item.Description
+                                </td>
+
+                                <td class="project-state">
+                                    <span class="badge badge-success">@item.Duration dk</span>
+                                </td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-warning btn-sm" href="/Home/EvalPagec/">
+                                        <i class="fas fa-file-alt">
+                                        </i>
+                                        Sınava Gir
+                                    </a>
+                                    
+                                </td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+</body>
+</html>
+<a href="/Exam/ExamAdd/" class="btn btn-primary">Yeni Sınav Gir</a>
+
+
+
+

@@ -1,0 +1,26 @@
+﻿@model EntityLayer.Concreate.Heding
+@{
+    ViewBag.Title = "EditHeding";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<h2>Konu Güncelleme Sayfası</h2>
+@using (Html.BeginForm("EditHeding", "WriterPanel", FormMethod.Post))
+{
+    <div class="form-group">
+       @Html.HiddenFor(x=>x.HedingID)
+       @Html.HiddenFor(x=>x.HedingDate)
+       @Html.HiddenFor(x=>x.WriterID)
+        @Html.Label("Konu Adı")
+        @Html.TextBoxFor(x => x.HedingName, new { @class = "form-control" })
+        <br />
+       
+        @Html.Label("Ders")
+        @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.vlc, new { @class = "form-control" })
+        <br />
+        <button class="btn btn-success">Güncelle</button>
+    </div>
+}
+
+
+

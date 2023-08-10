@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbExamsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ChoiceId" />
+          </Key>
+          <Property Name="ChoiceId" Type="int" Nullable="false" />
+          <Property Name="QuestionId" Type="int" />
+          <Property Name="Label" Type="varchar" MaxLength="100" />
+          <Property Name="Points" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Exhibit">
+          <Key>
+            <PropertyRef Name="ExhibitId" />
+          </Key>
+          <Property Name="ExhibitId" Type="int" Nullable="false" />
+          <Property Name="ExhibitName" Type="varchar" MaxLength="255" />
+          <Property Name="ExhibitDescription" Type="text" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="QuestionCategoryId" Type="int" />
+          <Property Name="QuestionType" Type="varchar" MaxLength="50" />
+          <Property Name="QuestionText" Type="text" />
+          <Property Name="ExhibitId" Type="int" />
+          <Property Name="Points" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="QuestionCategory">
+          <Key>
+            <PropertyRef Name="QuestionCategoryId" />
+          </Key>
+          <Property Name="QuestionCategoryId" Type="int" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="QuestionXDuration">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="RegistrationId" Type="int" />
+          <Property Name="TestXQuestionId" Type="int" />
+          <Property Name="RequestTime" Type="datetime" />
+          <Property Name="LeaveTime" Type="datetime" />
+          <Property Name="AnsweredTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="RegistrationId" />
+          </Key>
+          <Property Name="RegistrationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TestId" Type="int" />
+          <Property Name="RegistrationDate" Type="date" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" />
+          <Property Name="TokenExpireTime" Type="datetime" />
+          <Property Name="StudentId" Type="int" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentName" Type="varchar" MaxLength="50" />
+          <Property Name="StudentSurName" Type="varchar" MaxLength="50" />
+          <Property Name="Accesslevel" Type="int" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="int" />
+          <Property Name="PassHash" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="int" Nullable="false" />
+          <Property Name="TestName" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="DurationInMinute" Type="int" />
+        </EntityType>
+        <EntityType Name="TestXPaper">
+          <Key>
+            <PropertyRef Name="TestXPaperId" />
+          </Key>
+          <Property Name="TestXPaperId" Type="int" Nullable="false" />
+          <Property Name="RegistrationId" Type="int" />
+          <Property Name="TestXQuestionId" Type="int" />
+          <Property Name="ChoiceId" Type="int" />
+          <Property Name="Answer" Type="varchar" MaxLength="255" />
+          <Property Name="MarkScored" Type="int" />
+        </EntityType>
+        <EntityType Name="TestXQuestion">
+          <Key>
+            <PropertyRef Name="TestXQuestionId" />
+          </Key>
+          <Property Name="TestXQuestionId" Type="int" Nullable="false" />
+          <Property Name="TestId" Type="int" />
+          <Property Name="QuestionId" Type="int" />
+          <Property Name="QuestionNumber" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <Association Name="FK__Choice__Question__123EB7A3">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__Exhibi__2A164134">
+          <End Role="Exhibit" Type="Self.Exhibit" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibit">
+              <PropertyRef Name="ExhibitId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExhibitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__Questi__0F624AF8">
+          <End Role="QuestionCategory" Type="Self.QuestionCategory" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionCategory">
+              <PropertyRef Name="QuestionCategoryId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="QuestionCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionX__TestX__2739D489">
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="0..1" />
+          <End Role="QuestionXDuration" Type="Self.QuestionXDuration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestXQuestion">
+              <PropertyRef Name="TestXQuestionId" />
+            </Principal>
+            <Dependent Role="QuestionXDuration">
+              <PropertyRef Name="TestXQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXPape__Choic__25518C17">
+          <End Role="Choice" Type="Self.Choice" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Choice">
+              <PropertyRef Name="ChoiceId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="ChoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXPape__TestX__2645B050">
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestXQuestion">
+              <PropertyRef Name="TestXQuestionId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="TestXQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__Quest__18EBB532">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__TestI__17F790F9">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__TestI__3A4CA8FD">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionXDuration_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="0..1" />
+          <End Role="QuestionXDuration" Type="Self.QuestionXDuration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="RegistrationId" />
+            </Principal>
+            <Dependent Role="QuestionXDuration">
+              <PropertyRef Name="RegistrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestXPaper_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="RegistrationId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="RegistrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbExamsModelStoreContainer">
+          <EntitySet Name="Choice" EntityType="Self.Choice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exhibit" EntityType="Self.Exhibit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionCategory" EntityType="Self.QuestionCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionXDuration" EntityType="Self.QuestionXDuration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registration" EntityType="Self.Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestXPaper" EntityType="Self.TestXPaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestXQuestion" EntityType="Self.TestXQuestion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Choice__Question__123EB7A3" Association="Self.FK__Choice__Question__123EB7A3">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Choice" EntitySet="Choice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__Exhibi__2A164134" Association="Self.FK__Question__Exhibi__2A164134">
+            <End Role="Exhibit" EntitySet="Exhibit" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__Questi__0F624AF8" Association="Self.FK__Question__Questi__0F624AF8">
+            <End Role="QuestionCategory" EntitySet="QuestionCategory" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionX__TestX__2739D489" Association="Self.FK__QuestionX__TestX__2739D489">
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+            <End Role="QuestionXDuration" EntitySet="QuestionXDuration" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXPape__Choic__25518C17" Association="Self.FK__TestXPape__Choic__25518C17">
+            <End Role="Choice" EntitySet="Choice" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXPape__TestX__2645B050" Association="Self.FK__TestXPape__TestX__2645B050">
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__Quest__18EBB532" Association="Self.FK__TestXQues__Quest__18EBB532">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__TestI__17F790F9" Association="Self.FK__TestXQues__TestI__17F790F9">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__TestI__3A4CA8FD" Association="Self.FK__TestXQues__TestI__3A4CA8FD">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionXDuration_Registration" Association="Self.FK_QuestionXDuration_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="QuestionXDuration" EntitySet="QuestionXDuration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Student" Association="Self.FK_Registration_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Registration" EntitySet="Registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Test" Association="Self.FK_Registration_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Registration" EntitySet="Registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestXPaper_Registration" Association="Self.FK_TestXPaper_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbExamsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ChoiceId" />
+          </Key>
+          <Property Name="ChoiceId" Type="Int32" Nullable="false" />
+          <Property Name="QuestionId" Type="Int32" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Points" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Question" Relationship="Self.FK__Choice__Question__123EB7A3" FromRole="Choice" ToRole="Question" />
+          <NavigationProperty Name="TestXPaper" Relationship="Self.FK__TestXPape__Choic__25518C17" FromRole="Choice" ToRole="TestXPaper" />
+        </EntityType>
+        <EntityType Name="Exhibit">
+          <Key>
+            <PropertyRef Name="ExhibitId" />
+          </Key>
+          <Property Name="ExhibitId" Type="Int32" Nullable="false" />
+          <Property Name="ExhibitName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ExhibitDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Question" Relationship="Self.FK__Question__Exhibi__2A164134" FromRole="Exhibit" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="QuestionCategoryId" Type="Int32" />
+          <Property Name="QuestionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QuestionText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ExhibitId" Type="Int32" />
+          <Property Name="Points" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Choice" Relationship="Self.FK__Choice__Question__123EB7A3" FromRole="Question" ToRole="Choice" />
+          <NavigationProperty Name="Exhibit" Relationship="Self.FK__Question__Exhibi__2A164134" FromRole="Question" ToRole="Exhibit" />
+          <NavigationProperty Name="QuestionCategory" Relationship="Self.FK__Question__Questi__0F624AF8" FromRole="Question" ToRole="QuestionCategory" />
+          <NavigationProperty Name="TestXQuestion" Relationship="Self.FK__TestXQues__Quest__18EBB532" FromRole="Question" ToRole="TestXQuestion" />
+        </EntityType>
+        <EntityType Name="QuestionCategory">
+          <Key>
+            <PropertyRef Name="QuestionCategoryId" />
+          </Key>
+          <Property Name="QuestionCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK__Question__Questi__0F624AF8" FromRole="QuestionCategory" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="QuestionXDuration">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="RegistrationId" Type="Int32" />
+          <Property Name="TestXQuestionId" Type="Int32" />
+          <Property Name="RequestTime" Type="DateTime" Precision="3" />
+          <Property Name="LeaveTime" Type="DateTime" Precision="3" />
+          <Property Name="AnsweredTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="TestXQuestion" Relationship="Self.FK__QuestionX__TestX__2739D489" FromRole="QuestionXDuration" ToRole="TestXQuestion" />
+          <NavigationProperty Name="Registration" Relationship="Self.FK_QuestionXDuration_Registration" FromRole="QuestionXDuration" ToRole="Registration" />
+        </EntityType>
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="RegistrationId" />
+          </Key>
+          <Property Name="RegistrationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TestId" Type="Int32" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TokenExpireTime" Type="DateTime" Precision="3" />
+          <Property Name="StudentId" Type="Int32" />
+          <NavigationProperty Name="QuestionXDuration" Relationship="Self.FK_QuestionXDuration_Registration" FromRole="Registration" ToRole="QuestionXDuration" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Registration_Student" FromRole="Registration" ToRole="Student" />
+          <NavigationProperty Name="Test" Relationship="Self.FK_Registration_Test" FromRole="Registration" ToRole="Test" />
+          <NavigationProperty Name="TestXPaper" Relationship="Self.FK_TestXPaper_Registration" FromRole="Registration" ToRole="TestXPaper" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StudentSurName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Accesslevel" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="Int32" />
+          <Property Name="PassHash" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Registration" Relationship="Self.FK_Registration_Student" FromRole="Student" ToRole="Registration" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="TestId" />
+          </Key>
+          <Property Name="TestId" Type="Int32" Nullable="false" />
+          <Property Name="TestName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="DurationInMinute" Type="Int32" />
+          <NavigationProperty Name="Registration" Relationship="Self.FK_Registration_Test" FromRole="Test" ToRole="Registration" />
+          <NavigationProperty Name="TestXQuestion" Relationship="Self.FK__TestXQues__TestI__17F790F9" FromRole="Test" ToRole="TestXQuestion" />
+          <NavigationProperty Name="TestXQuestion1" Relationship="Self.FK__TestXQues__TestI__3A4CA8FD" FromRole="Test" ToRole="TestXQuestion" />
+        </EntityType>
+        <EntityType Name="TestXPaper">
+          <Key>
+            <PropertyRef Name="TestXPaperId" />
+          </Key>
+          <Property Name="TestXPaperId" Type="Int32" Nullable="false" />
+          <Property Name="RegistrationId" Type="Int32" />
+          <Property Name="TestXQuestionId" Type="Int32" />
+          <Property Name="ChoiceId" Type="Int32" />
+          <Property Name="Answer" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MarkScored" Type="Int32" />
+          <NavigationProperty Name="Choice" Relationship="Self.FK__TestXPape__Choic__25518C17" FromRole="TestXPaper" ToRole="Choice" />
+          <NavigationProperty Name="Registration" Relationship="Self.FK_TestXPaper_Registration" FromRole="TestXPaper" ToRole="Registration" />
+          <NavigationProperty Name="TestXQuestion" Relationship="Self.FK__TestXPape__TestX__2645B050" FromRole="TestXPaper" ToRole="TestXQuestion" />
+        </EntityType>
+        <EntityType Name="TestXQuestion">
+          <Key>
+            <PropertyRef Name="TestXQuestionId" />
+          </Key>
+          <Property Name="TestXQuestionId" Type="Int32" Nullable="false" />
+          <Property Name="TestId" Type="Int32" />
+          <Property Name="QuestionId" Type="Int32" />
+          <Property Name="QuestionNumber" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Question" Relationship="Self.FK__TestXQues__Quest__18EBB532" FromRole="TestXQuestion" ToRole="Question" />
+          <NavigationProperty Name="QuestionXDuration" Relationship="Self.FK__QuestionX__TestX__2739D489" FromRole="TestXQuestion" ToRole="QuestionXDuration" />
+          <NavigationProperty Name="Test" Relationship="Self.FK__TestXQues__TestI__17F790F9" FromRole="TestXQuestion" ToRole="Test" />
+          <NavigationProperty Name="Test1" Relationship="Self.FK__TestXQues__TestI__3A4CA8FD" FromRole="TestXQuestion" ToRole="Test" />
+          <NavigationProperty Name="TestXPaper" Relationship="Self.FK__TestXPape__TestX__2645B050" FromRole="TestXQuestion" ToRole="TestXPaper" />
+        </EntityType>
+        <Association Name="FK__Choice__Question__123EB7A3">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXPape__Choic__25518C17">
+          <End Role="Choice" Type="Self.Choice" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Choice">
+              <PropertyRef Name="ChoiceId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="ChoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__Exhibi__2A164134">
+          <End Role="Exhibit" Type="Self.Exhibit" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibit">
+              <PropertyRef Name="ExhibitId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExhibitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__Questi__0F624AF8">
+          <End Role="QuestionCategory" Type="Self.QuestionCategory" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionCategory">
+              <PropertyRef Name="QuestionCategoryId" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="QuestionCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__Quest__18EBB532">
+          <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="QuestionId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionX__TestX__2739D489">
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="0..1" />
+          <End Role="QuestionXDuration" Type="Self.QuestionXDuration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestXQuestion">
+              <PropertyRef Name="TestXQuestionId" />
+            </Principal>
+            <Dependent Role="QuestionXDuration">
+              <PropertyRef Name="TestXQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionXDuration_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="0..1" />
+          <End Role="QuestionXDuration" Type="Self.QuestionXDuration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="RegistrationId" />
+            </Principal>
+            <Dependent Role="QuestionXDuration">
+              <PropertyRef Name="RegistrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Test">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestXPaper_Registration">
+          <End Role="Registration" Type="Self.Registration" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registration">
+              <PropertyRef Name="RegistrationId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="RegistrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__TestI__17F790F9">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXQues__TestI__3A4CA8FD">
+          <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Test">
+              <PropertyRef Name="TestId" />
+            </Principal>
+            <Dependent Role="TestXQuestion">
+              <PropertyRef Name="TestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TestXPape__TestX__2645B050">
+          <End Role="TestXQuestion" Type="Self.TestXQuestion" Multiplicity="0..1" />
+          <End Role="TestXPaper" Type="Self.TestXPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TestXQuestion">
+              <PropertyRef Name="TestXQuestionId" />
+            </Principal>
+            <Dependent Role="TestXPaper">
+              <PropertyRef Name="TestXQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbExamsEntities5" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Choice" EntityType="Self.Choice" />
+          <EntitySet Name="Exhibit" EntityType="Self.Exhibit" />
+          <EntitySet Name="Question" EntityType="Self.Question" />
+          <EntitySet Name="QuestionCategory" EntityType="Self.QuestionCategory" />
+          <EntitySet Name="QuestionXDuration" EntityType="Self.QuestionXDuration" />
+          <EntitySet Name="Registration" EntityType="Self.Registration" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Test" EntityType="Self.Test" />
+          <EntitySet Name="TestXPaper" EntityType="Self.TestXPaper" />
+          <EntitySet Name="TestXQuestion" EntityType="Self.TestXQuestion" />
+          <AssociationSet Name="FK__Choice__Question__123EB7A3" Association="Self.FK__Choice__Question__123EB7A3">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Choice" EntitySet="Choice" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXPape__Choic__25518C17" Association="Self.FK__TestXPape__Choic__25518C17">
+            <End Role="Choice" EntitySet="Choice" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__Exhibi__2A164134" Association="Self.FK__Question__Exhibi__2A164134">
+            <End Role="Exhibit" EntitySet="Exhibit" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__Questi__0F624AF8" Association="Self.FK__Question__Questi__0F624AF8">
+            <End Role="QuestionCategory" EntitySet="QuestionCategory" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__Quest__18EBB532" Association="Self.FK__TestXQues__Quest__18EBB532">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionX__TestX__2739D489" Association="Self.FK__QuestionX__TestX__2739D489">
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+            <End Role="QuestionXDuration" EntitySet="QuestionXDuration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionXDuration_Registration" Association="Self.FK_QuestionXDuration_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="QuestionXDuration" EntitySet="QuestionXDuration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Student" Association="Self.FK_Registration_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Registration" EntitySet="Registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Test" Association="Self.FK_Registration_Test">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="Registration" EntitySet="Registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestXPaper_Registration" Association="Self.FK_TestXPaper_Registration">
+            <End Role="Registration" EntitySet="Registration" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__TestI__17F790F9" Association="Self.FK__TestXQues__TestI__17F790F9">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXQues__TestI__3A4CA8FD" Association="Self.FK__TestXQues__TestI__3A4CA8FD">
+            <End Role="Test" EntitySet="Test" />
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TestXPape__TestX__2645B050" Association="Self.FK__TestXPape__TestX__2645B050">
+            <End Role="TestXQuestion" EntitySet="TestXQuestion" />
+            <End Role="TestXPaper" EntitySet="TestXPaper" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbExamsModelStoreContainer" CdmEntityContainer="DbExamsEntities5">
+          <EntitySetMapping Name="Choice">
+            <EntityTypeMapping TypeName="DbExamsModel.Choice">
+              <MappingFragment StoreEntitySet="Choice">
+                <ScalarProperty Name="ChoiceId" ColumnName="ChoiceId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exhibit">
+            <EntityTypeMapping TypeName="DbExamsModel.Exhibit">
+              <MappingFragment StoreEntitySet="Exhibit">
+                <ScalarProperty Name="ExhibitId" ColumnName="ExhibitId" />
+                <ScalarProperty Name="ExhibitName" ColumnName="ExhibitName" />
+                <ScalarProperty Name="ExhibitDescription" ColumnName="ExhibitDescription" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Question">
+            <EntityTypeMapping TypeName="DbExamsModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="QuestionCategoryId" ColumnName="QuestionCategoryId" />
+                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
+                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+                <ScalarProperty Name="ExhibitId" ColumnName="ExhibitId" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionCategory">
+            <EntityTypeMapping TypeName="DbExamsModel.QuestionCategory">
+              <MappingFragment StoreEntitySet="QuestionCategory">
+                <ScalarProperty Name="QuestionCategoryId" ColumnName="QuestionCategoryId" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionXDuration">
+            <EntityTypeMapping TypeName="DbExamsModel.QuestionXDuration">
+              <MappingFragment StoreEntitySet="QuestionXDuration">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="RegistrationId" ColumnName="RegistrationId" />
+                <ScalarProperty Name="TestXQuestionId" ColumnName="TestXQuestionId" />
+                <ScalarProperty Name="RequestTime" ColumnName="RequestTime" />
+                <ScalarProperty Name="LeaveTime" ColumnName="LeaveTime" />
+                <ScalarProperty Name="AnsweredTime" ColumnName="AnsweredTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registration">
+            <EntityTypeMapping TypeName="DbExamsModel.Registration">
+              <MappingFragment StoreEntitySet="Registration">
+                <ScalarProperty Name="RegistrationId" ColumnName="RegistrationId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="TokenExpireTime" ColumnName="TokenExpireTime" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="DbExamsModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="StudentSurName" ColumnName="StudentSurName" />
+                <ScalarProperty Name="Accesslevel" ColumnName="Accesslevel" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="PassHash" ColumnName="PassHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DbExamsModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test">
+            <EntityTypeMapping TypeName="DbExamsModel.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="TestName" ColumnName="TestName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DurationInMinute" ColumnName="DurationInMinute" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestXPaper">
+            <EntityTypeMapping TypeName="DbExamsModel.TestXPaper">
+              <MappingFragment StoreEntitySet="TestXPaper">
+                <ScalarProperty Name="TestXPaperId" ColumnName="TestXPaperId" />
+                <ScalarProperty Name="RegistrationId" ColumnName="RegistrationId" />
+                <ScalarProperty Name="TestXQuestionId" ColumnName="TestXQuestionId" />
+                <ScalarProperty Name="ChoiceId" ColumnName="ChoiceId" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="MarkScored" ColumnName="MarkScored" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestXQuestion">
+            <EntityTypeMapping TypeName="DbExamsModel.TestXQuestion">
+              <MappingFragment StoreEntitySet="TestXQuestion">
+                <ScalarProperty Name="TestXQuestionId" ColumnName="TestXQuestionId" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="QuestionNumber" ColumnName="QuestionNumber" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

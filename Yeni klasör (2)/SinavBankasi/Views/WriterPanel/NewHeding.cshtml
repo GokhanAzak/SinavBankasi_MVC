@@ -1,0 +1,24 @@
+﻿@model EntityLayer.Concreate.Heding
+@{
+    ViewBag.Title = "NewHeding";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<h2> Yeni Konu Ekleme sayfası</h2>
+
+@using (Html.BeginForm("NewHeding","WriterPanel", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.Label("Konu Adı")
+        @Html.TextBoxFor(x => x.HedingName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.HedingName)
+        <br />
+        @Html.Label("Ders")
+        @Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.vlc, new { @class = "form-control" })
+        <br />
+       
+
+        <button class="btn btn-info"> Konuyu ekle</button>
+    </div>
+}
+

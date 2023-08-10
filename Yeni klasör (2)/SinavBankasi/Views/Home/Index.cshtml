@@ -1,0 +1,65 @@
+﻿@model SinavBankasi.Models.SessionModel
+
+<div class="jumbotron">
+    <h2>
+        <span style="color:#ff0000">
+            <i>Sınav</i>
+            Giriş
+
+        </span>
+    </h2>
+</div>
+@if (TempData["message"] != null)
+{
+    <div class="row">
+        <div class="col-md-10">
+            <p>
+                @Html.Raw(TempData["message"])
+            </p>
+
+        </div>
+    </div>
+
+}
+<br />
+<br />
+
+@using (Html.BeginForm("Instruction", "Home", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("Testi Seçin")</div>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.TestId, new SelectList(ViewBag.Tests, "TestId", "TestName", Model.TestId), "--Testi Seçin--", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("İsim Girin")</div>
+                <div class="col-md-5">@Html.TextBoxFor(x => x.UserName, Model.UserName, new { @class = "form-control" })</div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("Soyİsim Girin")</div>
+                <div class="col-md-5">@Html.TextBoxFor(x => x.UserSurName, Model.UserSurName, new { @class = "form-control" })</div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("Mail Girin")</div>
+                <div class="col-md-5">@Html.TextBoxFor(x => x.Mail, Model.Mail, new { @class = "form-control" })</div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("Telefon Girin #")</div>
+                <div class="col-md-5">@Html.TextBoxFor(x => Model.Phone, new { @class = "form-control" })</div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-5">
+
+                    <button type="submit" class="form-control btn btn-primary"> Devam Et</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
